@@ -2,13 +2,12 @@
 
 敏感词查找，验证，过滤和替换
 
-FindAll, Validate, Filter and Replace words. 
+FindAll, Validate, Filter and Replace words.
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/houseme/sensitive.svg)](https://pkg.go.dev/github.com/houseme/sensitive)
 [![sensitive CI](https://github.com/houseme/sensitive/actions/workflows/go.yml/badge.svg)](https://github.com/houseme/sensitive/actions/workflows/go.yml)
 [![License](https://img.shields.io/github/license/houseme/sensitive.svg?style=flat)](https://github.com/houseme/sensitive)
 ![GitHub go.mod Go version (branch)](https://img.shields.io/github/go-mod/go-version/houseme/sensitive/main)
-
 
 ## 特别说明
 
@@ -97,11 +96,11 @@ filter.LoadNetWordDict("https://raw.githubusercontent.com/houseme/sensitive/main
 
 ```go
 // failed
-filter.FindIn("这篇文章真的好垃 x 圾")      // false
+filter.FindIn("这篇文章真的好垃 x 圾") // false
 filter.UpdateNoisePattern(`x`)
 // success
-filter.FindIn("这篇文章真的好垃 x 圾")      // true, 垃圾
-filter.Validate("这篇文章真的好垃 x 圾")    // False, 垃圾
+filter.FindIn("这篇文章真的好垃 x 圾") // true, 垃圾
+filter.Validate("这篇文章真的好垃 x 圾") // False, 垃圾
 ```
 
 ## License
