@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/importcjj/sensitive"
+
+	"github.com/houseme/sensitive"
 )
 
 func keywordFilterSearch(content string) (bool, string) {

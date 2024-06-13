@@ -1,11 +1,11 @@
 package sensitive
 
-// Trie 短语组成的Trie树.
+// Trie 短语组成的 Trie 树。
 type Trie struct {
 	Root *Node
 }
 
-// Node Trie树上的一个节点.
+// Node Trie 树上的一个节点。
 type Node struct {
 	isRootNode bool
 	isPathEnd  bool
@@ -16,7 +16,7 @@ type Node struct {
 	depth      int
 }
 
-// BuildFailureLinks 更新Aho-Corasick的失败表
+// BuildFailureLinks 更新 Aho-Corasick 的失败表
 func (tree *Trie) BuildFailureLinks() {
 	for node := range tree.bfs() {
 		pointer := node.Parent
@@ -59,7 +59,7 @@ func (tree *Trie) bfs() <-chan *Node {
 	return ch
 }
 
-// NewTrie 新建一棵Trie
+// NewTrie 新建一棵 Trie
 func NewTrie() *Trie {
 	return &Trie{
 		Root: NewRootNode(0),
@@ -74,8 +74,8 @@ func (tree *Trie) Add(words ...string) {
 }
 
 func (tree *Trie) add(word string) {
-	var current = tree.Root
-	var runes = []rune(word)
+	current := tree.Root
+	runes := []rune(word)
 	for position := 0; position < len(runes); position++ {
 		r := runes[position]
 		if next, ok := current.Children[r]; ok {
@@ -100,8 +100,8 @@ func (tree *Trie) Del(words ...string) {
 }
 
 func (tree *Trie) del(word string) {
-	var current = tree.Root
-	var runes = []rune(word)
+	current := tree.Root
+	runes := []rune(word)
 	for position := 0; position < len(runes); position++ {
 		r := runes[position]
 		if next, ok := current.Children[r]; !ok {
@@ -174,7 +174,7 @@ func (tree *Trie) Filter(text string) string {
 	return string(resultRunes)
 }
 
-// Validate 验证字符串是否合法，如不合法则返回false和检测到
+// Validate 验证字符串是否合法，如不合法则返回 false 和检测到
 // 的第一个敏感词
 func (tree *Trie) Validate(text string) (bool, string) {
 	const EMPTY = ""
@@ -200,7 +200,7 @@ func (tree *Trie) Validate(text string) (bool, string) {
 	return true, EMPTY
 }
 
-// FindIn 判断text中是否含有词库中的词
+// FindIn 判断 text 中是否含有词库中的词
 func (tree *Trie) FindIn(text string) (bool, string) {
 	validated, first := tree.Validate(text)
 	return !validated, first
@@ -213,7 +213,7 @@ func (tree *Trie) FindAll(text string) []string {
 		next  *Node
 		runes = []rune(text)
 	)
-  
+
 	var ac = new(ac)
 	for position := 0; position < len(runes); position++ {
 		next = ac.next(node, runes[position])

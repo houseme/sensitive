@@ -36,7 +36,9 @@ func (filter *Filter) LoadWordDict(path string) error {
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer func() {
+		_ = f.Close()
+	}()
 
 	return filter.Load(f)
 }
@@ -50,7 +52,9 @@ func (filter *Filter) LoadNetWordDict(url string) error {
 	if err != nil {
 		return err
 	}
-	defer rsp.Body.Close()
+	defer func() {
+		_ = rsp.Body.Close()
+	}()
 
 	return filter.Load(rsp.Body)
 }
