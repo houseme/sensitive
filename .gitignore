@@ -2,7 +2,9 @@
 *.o
 *.a
 *.so
-
+.DS_Store
+.idea/
+.vscode/
 # Folders
 _obj
 _test
@@ -22,3 +24,16 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+*~
+*/*.so
+*/*.so.*
+*.bak
+*.log
+*.log.*
+*.pem
+*.sublime-project
+*.sublime-workspace
+*.tmp
+*.txt
+*.upx
