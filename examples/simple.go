@@ -8,7 +8,7 @@ import (
 
 func main() {
 	filter := sensitive.New()
-	_ = filter.LoadWordDict("../dict/dict.txt")
+	_ = filter.LoadWordDict("../dict/dict-all.txt")
 	filter.AddWord("一个东西")
 	filter.AddWord("一些")
 	filter.AddWord("个")

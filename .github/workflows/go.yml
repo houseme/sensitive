@@ -1,4 +1,4 @@
-name: Url-Shortenter CI
+name: Sensitive CI
 
 on:
   push:

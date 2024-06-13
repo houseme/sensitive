@@ -8,7 +8,7 @@ import (
 
 func main() {
 	filter := sensitive.New()
-	_ = filter.LoadWordDict("../dict/dict.txt")
+	_ = filter.LoadWordDict("../dict/dict-all.txt")
 	filter.AddWord("长者")
 
 	fmt.Println(filter.Filter("我为长者续一秒"))       // 我为续一秒

@@ -87,10 +87,8 @@ func (tree *Trie) add(word string) {
             current.Children[r] = newNode
             current = newNode
         }
-        if position == len(runes)-1 {
-            current.isPathEnd = true
-        }
     }
+    current.isPathEnd = true
 }
 
 func (tree *Trie) Del(words ...string) {

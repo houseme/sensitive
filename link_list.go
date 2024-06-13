@@ -1,13 +1,13 @@
 package sensitive
 
-// LinkList ...
+// LinkList is a simple linked list
 type LinkList struct {
 	head  *listNode
 	tail  *listNode
 	count int64
 }
 
-// Push appends a node
+// Push appending a node
 func (list *LinkList) Push(v interface{}) {
 	node := &listNode{
 		Value: v,
@@ -16,7 +16,6 @@ func (list *LinkList) Push(v interface{}) {
 		list.head = node
 	} else {
 		list.tail.Next = node
-
 	}
 	list.tail = node
 	list.count++

@@ -4,10 +4,15 @@
 
 FindAll, Validate, Filter and Replace words. 
 
-[![Build Status](https://travis-ci.org/importcjj/sensitive.svg?branch=master)](https://travis-ci.org/importcjj/sensitive) [![GoDoc](https://godoc.org/github.com/importcjj/sensitive?status.svg)](https://godoc.org/github.com/importcjj/sensitive)
+[![Go Reference](https://pkg.go.dev/badge/github.com/houseme/sensitive.svg)](https://pkg.go.dev/github.com/houseme/sensitive)
+[![sensitive CI](https://github.com/houseme/sensitive/actions/workflows/go.yml/badge.svg)](https://github.com/houseme/sensitive/actions/workflows/go.yml)
+[![License](https://img.shields.io/github/license/houseme/sensitive.svg?style=flat)](https://github.com/houseme/sensitive)
+![GitHub go.mod Go version (branch)](https://img.shields.io/github/go-mod/go-version/houseme/sensitive/main)
 
 
-新增分支[Aho-Corasick](https://github.com/importcjj/sensitive/tree/Aho-Corasick)以支持 AC 自动机
+## 特别说明
+
+基于 [sensitive](https://github.com/importcjj/sensitive), 修复了一些问题，增加了一些功能。
 
 #### 用法
 
@@ -83,7 +88,7 @@ filter.FindAll("这篇文章真的好垃圾")
 加载网络词库。
 
 ```go
-filter.LoadNetWordDict("https://raw.githubusercontent.com/houseme/sensitive/master/dict/dict.txt")
+filter.LoadNetWordDict("https://raw.githubusercontent.com/houseme/sensitive/main/dict/dict.txt")
 ```
 
 #### UpdateNoisePattern
@@ -98,3 +103,7 @@ filter.UpdateNoisePattern(`x`)
 filter.FindIn("这篇文章真的好垃 x 圾")      // true, 垃圾
 filter.Validate("这篇文章真的好垃 x 圾")    // False, 垃圾
 ```
+
+## License
+
+`Sensitive` is licensed under the [MIT License](LICENSE), 100% free and open-source, forever.
