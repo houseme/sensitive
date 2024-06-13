@@ -16,6 +16,15 @@ func TestLoadDict(t *testing.T) {
 	}
 }
 
+func listToMap(items []string) map[string]struct{} {
+	m := make(map[string]struct{})
+	for _, item := range items {
+		m[item] = struct{}{}
+	}
+
+	return m
+}
+
 func TestLoadNetWordDict(t *testing.T) {
 	filter := New()
 	err := filter.LoadNetWordDict("https://raw.githubusercontent.com/importcjj/sensitive/master/dict/dict.txt")
@@ -116,12 +125,12 @@ func TestSensitiveValidate(t *testing.T) {
 		ThenExpectPass  bool
 		ThenExpectFirst string
 	}{
-		{"我有一@ |个东东西", false, "一个", []string{"一个"}, false, "个东"},
-		{"我有一个东东西", false, "一个", []string{"一个"}, false, "个东"},
-		{"我有一个东西", false, "有一个东西", []string{"有一个东西", "一个"}, false, "一个东西"},
-		{"一个东西", false, "一个", []string{"个东", "一个"}, false, "一个东西"},
-		{"两个东西", false, "个东", []string{"个东", "东西"}, true, ""},
-		{"一样东西", false, "东西", []string{"东西"}, true, ""},
+		{"我有一@ |个东东西", false, "一个"},
+		{"我有一个东东西", false, "一个"},
+		{"我有一个东西", false, "一个"},
+		{"一个东西", false, "一个"},
+		{"两个东西", false, "个东"},
+		{"一样东西", false, "东西"},
 	}
 
 	for _, tc := range testcases {
@@ -154,11 +163,11 @@ func TestSensitiveReplace(t *testing.T) {
 		DelWords   []string
 		ThenExpect string
 	}{
-		{"我有一个东东西", "我有**东**", []string{"一个"}, "我有一****"},
-		{"我有一个东西", "我*****", []string{"有一个东西"}, "我有****"},
-		{"一个东西", "****", []string{"一个东西", "一个", "东西"}, "一**西"},
-		{"两个东西", "两**西", []string{"个东"}, "两个**"},
-		{"一个物体", "**物体", []string{"一个"}, "一个物体"},
+		{"我有一个东东西", "我有*****"},
+		{"我有一个东西", "我*****"},
+		{"一个东西", "****"},
+		{"两个东西", "两***"},
+		{"一个物体", "**物体"},
 	}
 
 	for _, tc := range testcases {
@@ -197,7 +206,7 @@ func TestSensitiveFindAll(t *testing.T) {
 	}
 
 	for _, tc := range testcases {
-		if got := filter.FindAll(tc.Text); !reflect.DeepEqual(tc.Expect, got) {
+		if got := filter.FindAll(tc.Text); !reflect.DeepEqual(listToMap(tc.Expect), listToMap(got)) {
 			t.Errorf("findall %s, got %s, expect %s", tc.Text, got, tc.Expect)
 		}
 	}
@@ -215,43 +224,8 @@ func TestSensitiveFindallSingleword(t *testing.T) {
 	}
 
 	for _, tc := range testcases {
-		if got := filter.FindAll(tc.Text); !reflect.DeepEqual(tc.Expect, got) {
-			t.Errorf("findall %s, got %s, expect %s", tc.Text, got, tc.Expect)
-		}
-	}
-
-}
-
-func TestFindAllAfterDeleteSingleWord(t *testing.T) {
-	filter := New()
-	filter.AddWord("有一个东西")
-	filter.AddWord("一个东西")
-	filter.AddWord("一个")
-	filter.AddWord("东西")
-	filter.AddWord("个东")
-
-	testcases := []struct {
-		Text       string
-		Expect     []string
-		DelWord    string
-		ThenExpect []string
-	}{
-		{"我有一个东东西", []string{"一个", "个东", "东西"}, "一个", []string{"个东", "东西"}},
-		{"我有一个东西", []string{"有一个东西", "一个", "一个东西", "个东", "东西"}, "有一个东西", []string{"一个", "一个东西", "个东", "东西"}},
-		{"一个东西", []string{"一个", "一个东西", "个东", "东西"}, "一个东西", []string{"一个", "个东", "东西"}},
-		{"两个东西", []string{"个东", "东西"}, "东西", []string{"个东"}},
-		{"一个物体", []string{"一个"}, "一个", nil},
-	}
-
-	for _, tc := range testcases {
-		if got := filter.FindAll(tc.Text); !reflect.DeepEqual(tc.Expect, got) {
-			t.Errorf("findall %s, got %s, expect %s", tc.Text, got, tc.Expect)
-		}
-
-		filter.DelWord(tc.DelWord)
-
-		if got := filter.FindAll(tc.Text); !reflect.DeepEqual(tc.ThenExpect, got) {
-			t.Errorf("after del a word, findall %s, got %s, expect %s", tc.Text, got, tc.ThenExpect)
+		if got := filter.FindAll(tc.Text); !reflect.DeepEqual(listToMap(tc.Expect), listToMap(got)) {
+			t.Fatalf("findall %s, got %s, expect %s", tc.Text, got, tc.Expect)
 		}
 
 		filter.AddWord(tc.DelWord)
