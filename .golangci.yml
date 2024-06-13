@@ -1,0 +1,219 @@
+linters:
+  # please, do not use `enable-all`: it's deprecated and will be removed soon.
+  # inverted configuration with `enable-all` and `disable` is not scalable during updates of golangci-lint
+  disable-all: true
+  enable:
+    - bodyclose
+    # - deadcode
+    - depguard
+    - dogsled
+    # - dupl
+    - errcheck
+    - funlen
+    # - goconst
+    # - gocritic
+    - gocyclo
+    - gofmt
+    - goimports
+    - goprintffuncname
+    # - gosimple
+    - govet
+    - ineffassign
+    #    - misspell
+    - nolintlint
+    - revive
+    # - rowserrcheck
+    # - staticcheck
+    # - structcheck
+    # - stylecheck
+    - typecheck
+    - unconvert
+    - unparam
+    # - unused
+    # - varcheck
+    - whitespace
+
+issues:
+  # Excluding configuration per-path, per-linter, per-text and per-source
+  include:
+    - EXC0002 # disable excluding of issues about comments from golint
+  exclude-rules:
+    - linters:
+        - stylecheck
+      text: "ST1000:"
+    - path: _test\.go
+      linters:
+        - gomnd
+        - funlen
+        - goconst
+
+    # https://github.com/go-critic/go-critic/issues/926
+    - linters:
+        - gocritic
+      text: "unnecessaryDefer:"
+
+linters-settings:
+  #  errcheck:
+  #    check-type-assertions: true # 这里建议设置为 true，如果确实不需要检查，可以写成`num, _ := strconv.Atoi(numStr)`
+  #    check-blank: false
+  lll:
+    line-length: 240 # 一行的长度
+  dogsled:
+    # Checks assignments with too many blank identifiers.
+    # Default: 2
+    max-blank-identifiers: 3
+  godox:
+    keywords: # 建议设置为 BUG、FIXME、OPTIMIZE、HACK
+      - BUG
+      - FIXME
+      - OPTIMIZE
+      - HACK
+  misspell:
+    locale: US
+    ignore-words:
+      - cancelled
+  goimports:
+    local-prefixes: github.com/houseme/sensitive
+  godot:
+    # Comments to be checked: `declarations`, `toplevel`, or `all`.
+    # Default: declarations
+    scope: toplevel
+    exclude:
+      # Exclude sentence fragments for lists.
+      - '^[ ]*[-•]'
+      # Exclude sentences prefixing a list.
+      - ':$'
+    # Check that each sentence ends with a period.
+    # Default: true
+    period: false
+    # Check that each sentence starts with a capital letter.
+    # Default: false
+    capital: false
+  revive:
+    ignore-generated-header: true
+    severity: error
+    rules:
+      - name: atomic
+      - name: line-length-limit
+        severity: error
+        arguments: [ 180 ]
+      - name: unhandled-error
+        arguments: [ "fmt.Printf", "myFunction" ]
+      - name: var-naming
+        severity: warning
+        disabled: false
+        arguments:
+          - [ "ID","URL","IP","HTTP","JSON","API","UID","Id","Api","Uid","Http","Json","Ip","Url" ] # AllowList
+          - [ "VM" ] # DenyList
+      - name: string-format
+        severity: warning
+        disabled: false
+        arguments:
+          - - 'core.WriteError[1].Message'
+            - '/^([^A-Z]|$)/'
+            - must not start with a capital letter
+          - - 'fmt.Errorf[0]'
+            - '/(^|[^\.!?])$/'
+            - must not end in punctuation
+          - - panic
+            - '/^[^\n]*$/'
+            - must not contain line breaks
+      - name: function-result-limit
+        severity: warning
+        disabled: false
+        arguments: [ 4 ]
+  funlen:
+    # Checks the number of lines in a function.
+    # If lower than 0, disable the check.
+    # Default: 60
+    lines: 160
+    # Checks the number of statements in a function.
+    # If lower than 0, disable the check.
+    # Default: 40
+    statements: -1
+  goconst:
+    # Minimal length of string constant.
+    # Default: 3
+    min-len: 2
+    # Minimum occurrences of constant string count to trigger issue.
+    # Default: 3
+    # For subsequent optimization, the value is reduced.
+    min-occurrences: 3
+    # Ignore test files.
+    # Default: false
+    ignore-tests: true
+    # Look for existing constants matching the values.
+    # Default: true
+    match-constant: false
+    # Search also for duplicated numbers.
+    # Default: false
+    numbers: true
+    # Minimum value, only works with goconst.numbers
+    # Default: 3
+    min: 3
+    # Maximum value, only works with goconst.numbers
+    # Default: 3
+    max: 3
+    # Ignore when constant is not used as function argument.
+    # Default: true
+    ignore-calls: false
+  gocritic:
+    disabled-checks:
+      - ifElseChain
+      - assignOp
+      - appendAssign
+      - singleCaseSwitch
+  gocyclo:
+    # Minimal code complexity to report.
+    # Default: 30 (but we recommend 10-20)
+    min-complexity: 30
+  depguard:
+    rules:
+      # Name of a rule.
+      main:
+        # Used to determine the package matching priority.
+        # There are three different modes: `original`, `strict`, and `lax`.
+        # Default: "original"
+        list-mode: lax
+        # List of file globs that will match this list of settings to compare against.
+        # Default: $all
+        files:
+          - "!**/*_a _file.go"
+        # List of allowed packages.
+        allow:
+          - $gostd
+          - $gogithub
+          - $gok8s
+          - $gogoogle
+          - $golang
+          - $gocloud
+          - $golang_org
+          - $golang_org_x
+        # Packages that are not allowed where the value is a suggestion.
+        deny:
+          - pkg: "github.com/sirupsen/logrus"
+            desc: not allowed
+          - pkg: "github.com/pkg/errors"
+            desc: Should be replaced by standard lib errors package
+      prevent_unmaintained_packages:
+        list-mode: lax # allow unless explicitely denied
+        files:
+          - $all
+          - "!$test"
+          - "!_test.go"
+        allow:
+          - $gostd
+          - $gogithub
+          - $gok8s
+          - $gogoogle
+          - $golang
+          - $gocloud
+          - $golang_org
+          - $golang_org_x
+        deny:
+          - pkg: io/ioutil
+            desc: "replaced by io and os packages since Go 1.16: https://tip.golang.org/doc/go1.16#ioutil"
+          - pkg: "github.com/sirupsen/logrus"
+            desc: not allowed
+          - pkg: "github.com/pkg/errors"
+            desc: Should be replaced by standard lib errors package
