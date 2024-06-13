@@ -73,8 +73,8 @@ func TestSensitiveFilter(t *testing.T) {
 			t.Fatalf("filter %s, got %s, expect %s", tc.Text, got, tc.Expect)
 		}
 	}
-
 }
+
 func TestSensitiveValidateSingleword(t *testing.T) {
 	filter := New()
 	filter.AddWord("东")
@@ -92,7 +92,6 @@ func TestSensitiveValidateSingleword(t *testing.T) {
 			t.Fatalf("validate %s, got %v, %s, expect %v, %s", tc.Text, pass, first, tc.ExpectPass, tc.ExpectFirst)
 		}
 	}
-
 }
 
 func TestSensitiveValidate(t *testing.T) {
@@ -125,7 +124,6 @@ func TestSensitiveValidate(t *testing.T) {
 			t.Errorf("validate %s, got %v, %s, expect %v, %s", tc.Text, pass, first, tc.ExpectPass, tc.ExpectFirst)
 		}
 	}
-
 }
 
 func TestSensitiveReplace(t *testing.T) {
@@ -152,7 +150,6 @@ func TestSensitiveReplace(t *testing.T) {
 			t.Fatalf("replace %s, got %s, expect %s", tc.Text, got, tc.Expect)
 		}
 	}
-
 }
 
 func TestSensitiveFindAll(t *testing.T) {
@@ -197,7 +194,6 @@ func TestSensitiveFindallSingleword(t *testing.T) {
 			t.Fatalf("findall %s, got %s, expect %s", tc.Text, got, tc.Expect)
 		}
 	}
-
 }
 
 func TestFilter_LoadWordDict(t *testing.T) {

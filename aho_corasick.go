@@ -16,10 +16,8 @@ func (ac *ac) fail(node *Node, c rune) *Node {
 			node = node.Failure
 			continue
 		}
-
 		return next
 	}
-
 }
 
 func (ac *ac) next(node *Node, c rune) *Node {
