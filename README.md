@@ -71,6 +71,7 @@ filter.FindIn("这篇文章真的好垃圾")
 ```go
 filter.Validate("这篇文章真的好垃圾")
 // output => false, 垃圾
+
 ```
 
 #### FindAll
